@@ -38,8 +38,8 @@ const Registration = () => {
             {...register("fullName")}
             className="w-full p-2 border rounded bg-gray-50 dark:bg-gray-700 dark:text-white"
           />
-          {errors.name && (
-            <p className="text-red-500 text-sm">{errors.name.message}</p>
+          {errors.fullName && (
+            <p className="text-red-500 text-sm">{errors.fullName.message}</p>
           )}
         </div>
 
