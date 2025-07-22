@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import dotenv from "dotenv";
+import { verifyToken } from "../middleware/authmiddleware.js";
 dotenv.config();
 
 const router = express.Router();
@@ -55,7 +56,7 @@ router.post("/login", async (req, res) => {
 
     // Generate JWT Token
     const token = jwt.sign(
-      { id: user._id },
+      { id: user._id, fullName: user.fullName },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
@@ -74,6 +75,10 @@ router.post("/login", async (req, res) => {
     console.error("Login error:", err);
     res.status(500).json({ message: "Server error" });
   }
+});
+
+router.get("/dashboard", verifyToken, (req, res) => {
+  res.json({ message: `Welcome back, ${req.user.fullName}` });
 });
 
 export default router;
