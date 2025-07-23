@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.js";
+import nestRoutes from "./routes/nestRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -20,6 +22,10 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes); // Now /api/auth/register works
 
 app.use("/api/user", authRoutes);
+
+app.use("/api/nests", nestRoutes);
+
+app.use("/api", taskRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;

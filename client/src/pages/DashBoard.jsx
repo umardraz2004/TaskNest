@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaTrash } from "react-icons/fa";
 
 const Dashboard = () => {
   const [nests, setNests] = useState([
@@ -22,7 +23,7 @@ const Dashboard = () => {
 
   const [newTask, setNewTask] = useState("");
   const [selectedNestId, setSelectedNestId] = useState(nests[0].id);
-  const [newNest, setNewNest] = useState(""); // 👈 for nest creation
+  const [newNest, setNewNest] = useState("");
 
   const handleAddNest = () => {
     if (!newNest.trim()) return;
@@ -34,7 +35,7 @@ const Dashboard = () => {
     };
 
     setNests([newNestObj, ...nests]);
-    setSelectedNestId(newNestObj.id); // Auto-select the new nest
+    setSelectedNestId(newNestObj.id);
     setNewNest("");
   };
 
@@ -112,32 +113,40 @@ const Dashboard = () => {
         </div>
 
         {/* 👇 Add Task Section */}
-        <div className="mb-6 flex items-center gap-4">
-          <select
-            value={selectedNestId}
-            onChange={(e) => setSelectedNestId(Number(e.target.value))}
-            className="p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded"
-          >
-            {nests.map((nest) => (
-              <option key={nest.id} value={nest.id}>
-                {nest.name}
-              </option>
-            ))}
-          </select>
+        <div className="mb-6">
+          <div className="flex gap-4 mb-4 items-center">
+            <select
+              value={selectedNestId}
+              onChange={(e) => setSelectedNestId(Number(e.target.value))}
+              
+              className="p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded w-full"
+            >
+              {nests.map((nest) => (
+                <option key={nest.id} value={nest.id}>
+                  {nest.name}
+                </option>
+              ))}
+            </select>
+            <button className="group bg-red-100 hover:bg-red-200 active:bg-red-300 text-red-600 hover:text-red-700 p-3 rounded-lg shadow-md transition-all duration-200">
+              <FaTrash className="text-md group-hover:scale-110 transition-transform duration-200" />
+            </button>
+          </div>
 
-          <input
-            type="text"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            placeholder="Add a new task"
-            className="flex-1 p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded"
-          />
-          <button
-            onClick={handleAddTask}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-          >
-            Add Task
-          </button>
+          <div className="flex gap-4">
+            <input
+              type="text"
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
+              placeholder="Add a new task"
+              className="flex-1 p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded w-full"
+            />
+            <button
+              onClick={handleAddTask}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+            >
+              Add Task
+            </button>
+          </div>
         </div>
 
         {/* 👇 Tasks By Nest */}
