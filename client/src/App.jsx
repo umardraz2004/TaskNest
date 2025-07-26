@@ -5,6 +5,7 @@ import Root from "./Layouts/Root";
 import Error from "./pages/Error";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
+import PrivateRoute from "./components/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -13,9 +14,16 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       { index: true, element: <Home /> },
-      { path: '/dashboard', element: <DashBoard /> },
-      { path: '/login', element: <Login /> },
-      { path: '/register', element: <Registration /> },
+      {
+        path: "/dashboard",
+        element: (
+          <PrivateRoute>
+            <DashBoard />
+          </PrivateRoute>
+        ),
+      },
+      { path: "/login", element: <Login /> },
+      { path: "/register", element: <Registration /> },
     ],
   },
 ]);

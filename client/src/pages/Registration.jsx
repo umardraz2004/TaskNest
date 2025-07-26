@@ -3,10 +3,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { RegistrationSchema } from "../utils/Schema";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -16,9 +19,25 @@ const Registration = () => {
     resolver: yupResolver(RegistrationSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Register Data:", data);
-    // Here we’ll later send to backend
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        data
+      ); // adjust URL if needed
+      const { token, user } = res.data;
+      console.log("Registration successful:", res.data);
+
+      // Save token to localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user)); // optional
+
+      // Redirect to dashboard or home
+      navigate("/dashboard"); // update this route as per your app
+    } catch (err) {
+      console.error("Registration failed", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Registration failed");
+    }
   };
 
   return (

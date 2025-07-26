@@ -8,9 +8,6 @@ dotenv.config();
 
 const router = express.Router();
 
-// @route   POST /api/auth/register
-// @desc    Register new user
-// @access  Public
 router.post("/register", async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
@@ -30,7 +27,22 @@ router.post("/register", async (req, res) => {
     // Save to DB
     await newUser.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    // Generate JWT after registration
+    const token = jwt.sign(
+      { id: newUser._id, fullName: newUser.fullName },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.status(201).json({
+      message: "User registered successfully",
+      token,
+      user: {
+        id: newUser._id,
+        fullName: newUser.fullName,
+        email: newUser.email,
+      },
+    });
   } catch (err) {
     console.error("Error registering user:", err);
     res.status(500).json({ message: "Server error" });

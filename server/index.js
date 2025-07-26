@@ -4,6 +4,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.js";
 import nestRoutes from "./routes/nestRoutes.js";
 import taskRoutes from "./routes/taskRoutes.js";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
@@ -13,6 +14,7 @@ connectDB();
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use(cors());
 
 // ✅ Test route
 app.get("/", (req, res) => {

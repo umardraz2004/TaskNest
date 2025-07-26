@@ -3,10 +3,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from "../utils/Schema";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const navigate = useNavigate();
+  const { loginUser } = useAuth();
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
   };
@@ -19,10 +23,20 @@ const Login = () => {
     resolver: yupResolver(LoginSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Login Data:", data);
-    // Here we’ll later send to backend
-  };
+  const onSubmit = async (data) => {
+  try {
+    const res = await axios.post("http://localhost:5000/api/auth/login", data);
+    const { token, user } = res.data;
+
+    // Important: This updates global state and localStorage
+    loginUser(token, user); // ✅ DO NOT REMOVE THIS
+
+    navigate("/dashboard");
+  } catch (err) {
+    alert(err.response?.data?.message || "Login failed");
+  }
+};
+
 
   return (
     <div className="flex items-center justify-center h-[38.8rem] px-4">
