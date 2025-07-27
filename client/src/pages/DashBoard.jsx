@@ -1,92 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import axios from "axios";
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const Dashboard = () => {
-  const [nests, setNests] = useState([
-    {
-      id: 1,
-      name: "Work",
-      tasks: [
-        { id: 101, title: "Finish report", completed: false },
-        { id: 102, title: "Send emails", completed: true },
-      ],
-    },
-    {
-      id: 2,
-      name: "Personal",
-      tasks: [
-        { id: 201, title: "Buy groceries", completed: false },
-        { id: 202, title: "Call Mom", completed: true },
-      ],
-    },
-  ]);
-
+  const [nests, setNests] = useState([]);
+  const [selectedNestId, setSelectedNestId] = useState(null);
   const [newTask, setNewTask] = useState("");
-  const [selectedNestId, setSelectedNestId] = useState(nests[0].id);
   const [newNest, setNewNest] = useState("");
 
-  const handleAddNest = () => {
-    if (!newNest.trim()) return;
-
-    const newNestObj = {
-      id: Date.now(),
-      name: newNest,
-      tasks: [],
-    };
-
-    setNests([newNestObj, ...nests]);
-    setSelectedNestId(newNestObj.id);
-    setNewNest("");
+  // Fetch nests and tasks
+  const fetchNests = async () => {
+    try {
+      const token = localStorage.getItem("token"); // JWT from login
+      const res = await axios.get(`${baseURL}/api/nests`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setNests(res.data); // adjust if response is { nests: [...] }
+    } catch (error) {
+      console.error("Failed to fetch nests", error);
+    }
   };
 
-  const handleAddTask = () => {
-    if (!newTask.trim()) return;
+  useEffect(() => {
+    fetchNests();
+  }, []);
 
-    const updatedNests = nests.map((nest) =>
-      nest.id === selectedNestId
-        ? {
-            ...nest,
-            tasks: [
-              { id: Date.now(), title: newTask, completed: false },
-              ...nest.tasks,
-            ],
-          }
-        : nest
-    );
-
-    setNests(updatedNests);
-    setNewTask("");
-  };
-
-  const toggleComplete = (nestId, taskId) => {
-    const updatedNests = nests.map((nest) =>
-      nest.id === nestId
-        ? {
-            ...nest,
-            tasks: nest.tasks.map((task) =>
-              task.id === taskId
-                ? { ...task, completed: !task.completed }
-                : task
-            ),
-          }
-        : nest
-    );
-
-    setNests(updatedNests);
-  };
-
-  const deleteTask = (nestId, taskId) => {
-    const updatedNests = nests.map((nest) =>
-      nest.id === nestId
-        ? {
-            ...nest,
-            tasks: nest.tasks.filter((task) => task.id !== taskId),
-          }
-        : nest
-    );
-
-    setNests(updatedNests);
-  };
+  useEffect(() => {
+    if (nests.length > 0) {
+      setSelectedNestId(nests[0]._id);
+    }
+  }, [nests]);
 
   return (
     <div className="px-4 py-8">
@@ -95,34 +41,16 @@ const Dashboard = () => {
           Task Dashboard
         </h2>
 
-        {/* 👇 Add Nest Section */}
-        <div className="mb-6 flex gap-4">
-          <input
-            type="text"
-            value={newNest}
-            onChange={(e) => setNewNest(e.target.value)}
-            placeholder="Add new nest"
-            className="flex-1 p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded"
-          />
-          <button
-            onClick={handleAddNest}
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-          >
-            Add Nest
-          </button>
-        </div>
-
-        {/* 👇 Add Task Section */}
+        {/* 👇 Nest Selector & Add Task */}
         <div className="mb-6">
           <div className="flex gap-4 mb-4 items-center">
             <select
-              value={selectedNestId}
-              onChange={(e) => setSelectedNestId(Number(e.target.value))}
-              
+              value={selectedNestId || ""}
+              onChange={(e) => setSelectedNestId(e.target.value)}
               className="p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded w-full"
             >
               {nests.map((nest) => (
-                <option key={nest.id} value={nest.id}>
+                <option key={nest._id} value={nest._id}>
                   {nest.name}
                 </option>
               ))}
@@ -140,30 +68,40 @@ const Dashboard = () => {
               placeholder="Add a new task"
               className="flex-1 p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded w-full"
             />
-            <button
-              onClick={handleAddTask}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-            >
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
               Add Task
             </button>
           </div>
         </div>
 
-        {/* 👇 Tasks By Nest */}
+        {/* 👇 Add Nest */}
+        <div className="mb-6 flex gap-4">
+          <input
+            type="text"
+            value={newNest}
+            onChange={(e) => setNewNest(e.target.value)}
+            placeholder="Add new nest"
+            className="flex-1 p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded"
+          />
+          <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+            Add Nest
+          </button>
+        </div>
+
+        {/* 👇 Tasks in Each Nest */}
         {nests.map((nest) => (
-          <div key={nest.id} className="mb-6">
+          <div key={nest._id} className="mb-6">
             <h3 className="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-200">
               {nest.name}
             </h3>
             <ul className="space-y-3">
-              {nest.tasks.map((task) => (
+              {(nest.tasks || []).map((task) => (
                 <li
-                  key={task.id}
+                  key={task._id}
                   className="flex justify-between items-center bg-gray-100 dark:bg-gray-700 p-3 rounded"
                 >
                   <span
-                    onClick={() => toggleComplete(nest.id, task.id)}
-                    className={`flex-1 cursor-pointer ${
+                    className={`flex-1 ${
                       task.completed
                         ? "line-through text-gray-400"
                         : "text-gray-900 dark:text-white"
@@ -171,10 +109,7 @@ const Dashboard = () => {
                   >
                     {task.title}
                   </span>
-                  <button
-                    onClick={() => deleteTask(nest.id, task.id)}
-                    className="text-red-500 hover:text-red-700 ml-4"
-                  >
+                  <button className="text-red-500 hover:text-red-700 ml-4">
                     Delete
                   </button>
                 </li>

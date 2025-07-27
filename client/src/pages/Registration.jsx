@@ -5,6 +5,7 @@ import { RegistrationSchema } from "../utils/Schema";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,18 +23,16 @@ const Registration = () => {
   const onSubmit = async (data) => {
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${baseURL}/api/auth/register`,
         data
-      ); // adjust URL if needed
+      );
       const { token, user } = res.data;
       console.log("Registration successful:", res.data);
 
-      // Save token to localStorage
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user)); // optional
+      localStorage.setItem("user", JSON.stringify(user));
 
-      // Redirect to dashboard or home
-      navigate("/dashboard"); // update this route as per your app
+      navigate("/dashboard");
     } catch (err) {
       console.error("Registration failed", err.response?.data || err.message);
       alert(err.response?.data?.message || "Registration failed");
@@ -116,7 +115,7 @@ const Registration = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
+          className="w-full bg-blue-700 hover:bg-blue-600 text-white py-2 rounded transition duration-300 cursor-pointer"
         >
           Register
         </button>

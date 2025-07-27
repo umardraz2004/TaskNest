@@ -5,7 +5,8 @@ import { LoginSchema } from "../utils/Schema";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../store/AuthContext";
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,11 +26,10 @@ const Login = () => {
 
   const onSubmit = async (data) => {
   try {
-    const res = await axios.post("http://localhost:5000/api/auth/login", data);
+    const res = await axios.post(`${baseURL}/api/auth/login`, data);
     const { token, user } = res.data;
 
-    // Important: This updates global state and localStorage
-    loginUser(token, user); // ✅ DO NOT REMOVE THIS
+    loginUser(token, user);
 
     navigate("/dashboard");
   } catch (err) {
@@ -82,7 +82,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
+          className="w-full bg-blue-700 hover:bg-blue-600 text-white py-2 rounded transition duration-300 cursor-pointer"
         >
           Login
         </button>

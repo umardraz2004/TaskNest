@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "../store/AuthContext";
 import LogoImage from "../assets/images/logo.png";
 const Navbar = () => {
+  const { isAuthenticated, logout } = useAuth();
   return (
     <nav className="flex justify-between items-center px-6 py-4 shadow-md bg-white dark:bg-gray-900">
       <Link
@@ -12,20 +14,38 @@ const Navbar = () => {
         </div>
         <div className="font-pop text-center">TaskNest</div>
       </Link>
-      <div className="flex gap-4">
-        <Link
-          to="/login"
-          className="px-4 py-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-white"
-        >
-          Login
-        </Link>
-        <Link
-          to="/register"
-          className="px-4 py-2 border rounded bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          Register
-        </Link>
-      </div>
+      {isAuthenticated ? (
+        <div>
+          <Link
+            to="/dashboard"
+            className="text-black bg-white hover:bg-gray-950 hover:text-white font-semibold py-2 px-6 rounded-full transition duration-300 me-4"
+          >
+            Dashboard
+          </Link>
+          <Link
+            to="/dashboard"
+            onClick={() => logout()}
+            className="text-black bg-white hover:bg-gray-950 hover:text-white font-semibold py-2 px-6 rounded-full transition duration-300"
+          >
+            Logout
+          </Link>
+        </div>
+      ) : (
+        <div className="flex gap-4">
+          <Link
+            to="/login"
+            className="px-4 py-2 font-semibold rounded text-black bg-white hover:bg-gray-950 hover:text-white transition duration-400"
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className="px-4 py-2 font-semibold rounded text-black bg-white hover:bg-gray-950 hover:text-white transition duration-400"
+          >
+            Register
+          </Link>
+        </div>
+      )}
     </nav>
   );
 };
