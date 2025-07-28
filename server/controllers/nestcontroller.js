@@ -46,19 +46,60 @@ export const createNest = async (req, res) => {
   }
 };
 
-// DELETE nest
+// DELETE nest and its related tasks
 export const deleteNest = async (req, res) => {
   const { id } = req.params;
+
+  // Check for valid ID format
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "Invalid Nest ID" });
+  }
+
+  try {
+    // Delete the nest owned by the user
+    const nest = await Nest.findOneAndDelete({ _id: id, userId: req.user.id });
+
+    if (!nest) {
+      return res.status(404).json({ error: "Nest not found or not yours" });
+    }
+
+    // Delete all tasks linked to the deleted nest
+    await Task.deleteMany({ nest: nest._id, user: req.user.id });
+
+    res.status(200).json({ message: "Nest and its tasks deleted", id });
+  } catch (err) {
+    console.error("Error deleting nest and tasks:", err);
+    res.status(500).json({ error: "Failed to delete nest and tasks" });
+  }
+};
+
+export const updateNest = async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "Invalid Nest ID" });
   }
 
-  const nest = await Nest.findOneAndDelete({ _id: id, userId: req.user.id });
-
-  if (!nest) {
-    return res.status(404).json({ error: "Nest not found or not yours" });
+  if (!name || name.trim() === "") {
+    return res.status(400).json({ error: "Nest name is required" });
   }
 
-  res.status(200).json({ message: "Nest deleted", id });
+  try {
+    const updatedNest = await Nest.findOneAndUpdate(
+      { _id: id, userId: req.user.id },
+      { $set: { name } },
+      { new: true }
+    );
+
+    if (!updatedNest) {
+      return res.status(404).json({ error: "Nest not found or not yours" });
+    }
+
+    res.status(200).json(updatedNest);
+  } catch (err) {
+    console.error("Error updating nest:", err);
+    res.status(500).json({ error: "Failed to update nest" });
+  }
 };
+

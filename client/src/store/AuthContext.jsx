@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer, useEffect } from "react";
 
-const INACTIVITY_LIMIT = 2 * 60 * 1000; // 15 minutes
+const INACTIVITY_LIMIT = 15 * 60 * 1000; // 15 minutes
 let inactivityTimer;
 
 // Initial context shape
