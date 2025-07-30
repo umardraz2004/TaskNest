@@ -14,7 +14,9 @@ connectDB();
 
 // Middleware to parse JSON
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: process.env.BASE_URL
+}));
 
 // ✅ Test route
 app.get("/", (req, res) => {
