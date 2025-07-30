@@ -1,7 +1,12 @@
-import { createContext, useContext, useReducer, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  useRef,
+} from "react";
 
-const INACTIVITY_LIMIT = 15 * 60 * 1000; // 15 minutes
-let inactivityTimer;
+const INACTIVITY_LIMIT = 15 * 60 * 1000;
 
 // Initial context shape
 export const AuthContext = createContext({
@@ -48,12 +53,13 @@ export function AuthProvider({ children }) {
     token: localStorage.getItem("token"),
     isAuthenticated: !!localStorage.getItem("token"),
   });
+  const inactivityTimerRef = useRef(null);
 
   // Reset and start inactivity timer
   const resetInactivityTimer = () => {
-    if (inactivityTimer) clearTimeout(inactivityTimer);
+    if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
     localStorage.setItem("lastActivity", Date.now().toString());
-    inactivityTimer = setTimeout(() => {
+    inactivityTimerRef.current = setTimeout(() => {
       logout();
       alert("You have been logged out due to inactivity.");
     }, INACTIVITY_LIMIT);
@@ -62,29 +68,49 @@ export function AuthProvider({ children }) {
   // Load user from localStorage on mount
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
+    const rawUser = localStorage.getItem("user");
+
+    // Safe parse helper
+    const parseUser = (value) => {
+      if (!value || value === "undefined" || value === "null") return null;
+      try {
+        return JSON.parse(value);
+      } catch {
+        return null;
+      }
+    };
+
+    const storedUser = parseUser(rawUser);
+
+    // If we have a token but no valid user object, clean up to avoid inconsistent state
+    if (storedToken && !storedUser) {
+      localStorage.removeItem("user");
+    }
 
     if (storedToken && storedUser) {
-      const lastActivity = localStorage.getItem("lastActivity");
-      const timeSinceLast = Date.now() - parseInt(lastActivity || "0", 10);
+      const lastActivityStr = localStorage.getItem("lastActivity");
 
-      if (timeSinceLast > INACTIVITY_LIMIT) {
-        logout();
-        alert("Session expired due to inactivity.");
-        return;
+      // First-time seed: don't expire on first load
+      if (!lastActivityStr) {
+        localStorage.setItem("lastActivity", Date.now().toString());
+      } else {
+        const lastActivity = parseInt(lastActivityStr, 10);
+        const timeSinceLast = Date.now() - lastActivity;
+
+        if (timeSinceLast > INACTIVITY_LIMIT) {
+          logout();
+          alert("Session expired due to inactivity.");
+          return;
+        }
       }
 
       dispatch({
         type: "LOAD_USER",
-        payload: {
-          user: JSON.parse(storedUser),
-          token: storedToken,
-        },
+        payload: { user: storedUser, token: storedToken },
       });
     }
   }, []);
 
-  // Setup inactivity listeners
   useEffect(() => {
     if (authState.token) {
       const events = ["mousemove", "keydown", "click", "scroll"];
@@ -92,27 +118,45 @@ export function AuthProvider({ children }) {
         window.addEventListener(event, resetInactivityTimer)
       );
 
+      // If lastActivity missing (e.g., first load after verify), seed it once.
+      if (!localStorage.getItem("lastActivity")) {
+        localStorage.setItem("lastActivity", Date.now().toString());
+      }
+
       resetInactivityTimer();
 
       return () => {
         events.forEach((event) =>
           window.removeEventListener(event, resetInactivityTimer)
         );
-        clearTimeout(inactivityTimer);
+        if (inactivityTimerRef.current)
+          clearTimeout(inactivityTimerRef.current);
       };
     }
   }, [authState.token]);
 
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (e.key === "token" && !e.newValue) {
+        // token removed in another tab
+        logout();
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
   // Login handler
   function loginUser(token, user) {
+    if (!token || !user || typeof user !== "object") {
+      // optional: throw or just return
+      return;
+    }
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("lastActivity", Date.now().toString());
 
-    dispatch({
-      type: "LOGIN",
-      payload: { token, user },
-    });
+    dispatch({ type: "LOGIN", payload: { token, user } });
   }
 
   // Logout handler
@@ -120,7 +164,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("lastActivity");
-    clearTimeout(inactivityTimer);
+    clearTimeout(inactivityTimer.current);
 
     dispatch({ type: "LOGOUT" });
   }

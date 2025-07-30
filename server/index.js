@@ -23,14 +23,12 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes); // Now /api/auth/register works
 
-app.use("/api/user", authRoutes);
-
 app.use("/api/nests", nestRoutes);
 
 app.use("/api", taskRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT , () => {
   console.log(`Server running on port ${PORT}`);
 });

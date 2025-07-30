@@ -163,6 +163,27 @@ const Dashboard = () => {
     }
   };
 
+  const handleCheckboxChange = async (task) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.patch(
+        `${baseURL}/api/nests/${selectedNestId}/${task._id}`,
+        { completed: !task.completed },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      window.location.reload();
+    } catch (err) {
+      console.error(
+        "Error updating task completion:",
+        err.response?.data || err.message
+      );
+    }
+  };
+
   return (
     <div className="px-4 py-8">
       <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
@@ -288,15 +309,25 @@ const Dashboard = () => {
                       className="w-full me-5 text-white outline-none"
                     />
                   ) : (
-                    <span
-                      className={`flex-1 ${
-                        task.completed
-                          ? "line-through text-gray-400"
-                          : "text-gray-900 dark:text-white"
-                      }`}
-                    >
-                      {task.title}
-                    </span>
+                    <div className="flex items-center w-full">
+                      <span className="inline-flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={task.completed}
+                          onChange={() => handleCheckboxChange(task)} // use `onChange` instead of `onClick` for checkboxes
+                          className="me-3 h-5 w-5 appearance-none bg-transparent border-4 border-gray-800 rounded-full checked:bg-gray-400 transition-all duration-200 cursor-pointer"
+                        />
+                      </span>
+                      <span
+                        className={`flex-1 ${
+                          task.completed
+                            ? "line-through text-gray-400"
+                            : "text-gray-900 dark:text-white"
+                        }`}
+                      >
+                        {task.title}
+                      </span>
+                    </div>
                   )}
                   <button
                     onClick={() => handleDeleteTask(task._id)}

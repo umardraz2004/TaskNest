@@ -25,18 +25,17 @@ const Login = () => {
   });
 
   const onSubmit = async (data) => {
-  try {
-    const res = await axios.post(`${baseURL}/api/auth/login`, data);
-    const { token, user } = res.data;
+    try {
+      const res = await axios.post(`${baseURL}/api/auth/login`, data);
+      const { token, user } = res.data;
 
-    loginUser(token, user);
+      loginUser(token, user);
 
-    navigate("/dashboard");
-  } catch (err) {
-    alert(err.response?.data?.message || "Login failed");
-  }
-};
-
+      navigate("/dashboard");
+    } catch (err) {
+      alert(err.response?.data?.message || "Login failed");
+    }
+  };
 
   return (
     <div className="flex items-center justify-center h-[38.8rem] px-4">
