@@ -4,13 +4,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { RegistrationSchema } from "../utils/Schema";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import EmailSendingModal from "../components/EmailSendingModal";
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const navigate = useNavigate();
+  const [sending, setSending] = useState(false);
+  const [message, setMessage] = useState("Sending you mail...");
+  const [showSpin, setShowSpin] = useState(true);
 
   const {
     register,
@@ -22,17 +24,15 @@ const Registration = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post(
-        `${baseURL}/api/auth/register`,
-        data
-      );
-      const { token, user } = res.data;
-      console.log("Registration successful:", res.data);
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      navigate("/dashboard");
+      setSending(true);
+      const res = await axios.post(`${baseURL}/api/auth/register`, data);
+      if (res.status === 200) {
+        setMessage("Email sent successful! Please check your email.");
+        setShowSpin(false);
+        setTimeout(() => {
+          setSending(false);
+        }, 5000);
+      }
     } catch (err) {
       console.error("Registration failed", err.response?.data || err.message);
       alert(err.response?.data?.message || "Registration failed");
@@ -120,6 +120,7 @@ const Registration = () => {
           Register
         </button>
       </form>
+      <EmailSendingModal open={sending} text={message} showSpin={showSpin} />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../store/AuthContext";
 import LogoImage from "../assets/images/logo.png";
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   return (
     <nav className="flex justify-between items-center px-6 py-4 shadow-md bg-white dark:bg-gray-900">
       <Link
@@ -14,7 +14,7 @@ const Navbar = () => {
         </div>
         <div className="font-pop text-center">TaskNest</div>
       </Link>
-      {isAuthenticated ? (
+      {isAuthenticated && user != undefined ? (
         <div>
           <Link
             to="/dashboard"
