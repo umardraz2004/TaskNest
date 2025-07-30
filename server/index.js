@@ -14,9 +14,14 @@ connectDB();
 
 // Middleware to parse JSON
 app.use(express.json());
-app.use(cors({
-  origin: process.env.BASE_URL
-}));
+app.use(
+  cors({
+    origin: "https://task-nest-kappa.vercel.app/", // ✅ Replace with your actual frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 // ✅ Test route
 app.get("/", (req, res) => {
@@ -31,6 +36,6 @@ app.use("/api", taskRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT , () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
