@@ -14,14 +14,7 @@ connectDB();
 
 // Middleware to parse JSON
 app.use(express.json());
-app.use(
-  cors({
-    origin: "https://task-nest-kappa.vercel.app/", // ✅ Replace with your actual frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+app.use(cors());
 
 // ✅ Test route
 app.get("/", (req, res) => {
