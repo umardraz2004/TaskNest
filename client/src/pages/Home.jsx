@@ -1,22 +1,34 @@
 import { useAuth } from "../store/AuthContext";
+
 const Home = () => {
   const { isAuthenticated, user } = useAuth();
+
   return (
-    <div className="flex justify-center items-center h-[38.8rem]">
-      <div className="text-center max-w-2xl">
-        <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4 font-pop">
-          Welcome 
+    <div className="min-h-[calc(100vh-4.5rem)] flex items-center justify-center px-6 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800">
+      <div className="text-center max-w-3xl">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight font-pop">
+          Welcome
           {isAuthenticated && user && (
-            <span className="text-yellow-500"> {user.fullName}</span>
-          )}
-          {" "}to TaskNest
+            <span className="text-yellow-400"> {user.fullName}</span>
+          )}{" "}
+          to <span className="text-blue-500">TaskNest</span>
         </h1>
-        <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 font-roboto">
+        <p className="text-lg sm:text-xl text-gray-300 font-roboto leading-relaxed">
           Organize your tasks efficiently and stay productive with your personal
-          task manager,
-          {isAuthenticated
-            ? " your dashboard is ready!"
-            : " You have to register yourself before start using our app or login if you already have an account."}
+          task manager.
+          <br />
+          {isAuthenticated ? (
+            <span className="text-green-400 font-medium">
+              Your dashboard is ready!
+            </span>
+          ) : (
+            <span>
+              {" "}
+              <span className="text-yellow-300 font-medium">Register now</span>{" "}
+              or <span className="text-yellow-300 font-medium">login</span> to
+              start organizing your tasks.
+            </span>
+          )}
         </p>
       </div>
     </div>

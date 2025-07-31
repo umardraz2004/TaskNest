@@ -31,7 +31,7 @@ export default function VerifyEmail() {
         setStatus("Email verified! Redirecting to login…");
         redirectTimeoutRef.current = setTimeout(
           () => navigate("/login", { replace: true }),
-          1500
+          3000
         );
       } catch (e) {
         if (cancelled) return;
@@ -52,7 +52,7 @@ export default function VerifyEmail() {
   }, [navigate, token, loginUser]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-[calc(100vh-4.5rem)] flex items-center justify-center">
       <div className="p-6 rounded-xl shadow text-center">
         <p className="mb-4 text-white">{status}</p>
         {status.startsWith("Email verified") ? (

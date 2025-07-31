@@ -9,7 +9,7 @@ const Root = () => {
       <main className="flex-1">
         <Outlet />
         <Toaster
-          position="bottom-right"
+          position="bottom-left"
           toastOptions={{
             duration: 3000,
             style: {

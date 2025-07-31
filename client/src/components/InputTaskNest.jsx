@@ -1,3 +1,5 @@
+import { MdOutlineClear } from "react-icons/md";
+import { IoMdAdd } from "react-icons/io";
 const InputTaskNest = ({
   inputValue,
   onTaskChange,
@@ -6,7 +8,7 @@ const InputTaskNest = ({
   inputFor,
 }) => {
   return (
-    <div className="flex gap-4 mb-4">
+    <div className="flex mb-4">
       <input
         type="text"
         value={inputValue}
@@ -16,16 +18,20 @@ const InputTaskNest = ({
             ? "Add a new task"
             : inputFor == "nest" && "Add a new nest"
         }
-        className="flex-1 p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded w-full"
+        className="flex-1 p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white w-full outline-none"
       />
       <button
         onClick={() => taskAddHandler(inputValue, selectedNest)}
-        className={`${inputFor == "task" && "bg-blue-600 hover:bg-blue-700"} ${
-          inputFor == "nest" && "bg-green-600 hover:bg-green-700"
-        } text-white px-4 py-2 rounded`}
+        className="bg-green-700 hover:bg-green-600 transition-colors duration-300 text-white px-4 py-2"
       >
-        {inputFor == "task" && "Add Task"}
-        {inputFor == "nest" && "Add Nest"}
+        {inputFor == "task" && <IoMdAdd className="text-xl" />}
+        {inputFor == "nest" && <IoMdAdd className="text-xl" />}
+      </button>
+      <button
+        onClick={() => onTaskChange("")}
+        className={`bg-gray-950 hover:bg-gray-900 transition-colors duration-300 text-white px-4 py-2`}
+      >
+        <MdOutlineClear className="font-semibold text-xl" />
       </button>
     </div>
   );

@@ -61,7 +61,7 @@ router.post("/verify-email", async (req, res) => {
   try {
     const decoded = jwt.verify(
       token,
-      process.env.JWT_VERIFY_SECRET || process.env.JWT_SECRET
+      process.env.JWT_SECRET
     );
     if (decoded.purpose !== "email-verify") {
       return res.status(400).json({ message: "Invalid verification token" });

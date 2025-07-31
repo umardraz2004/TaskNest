@@ -1,4 +1,4 @@
-import { FaTrash, FaEdit, FaCheck } from "react-icons/fa";
+import { FaRegTrashAlt, FaEdit, FaCheck } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
 import { useState } from "react";
 import { showToast } from "../utils/toast";
@@ -62,22 +62,22 @@ const TaskList = ({
           )}
           <button
             onClick={() => onTaskDelete(selectedNestId, task._id)}
-            className="group me-2 bg-red-600 hover:bg-red-200 active:bg-red-300 text-red-100 hover:text-red-700 p-2 rounded-lg shadow-md transition-all duration-200"
+            className="group me-3 text-red-500 cursor-pointer rounded-lg shadow-md transition-all duration-200"
           >
-            <FaTrash className="text-md group-hover:scale-110 transition-transform duration-200" />
+            <FaRegTrashAlt className="text-sm group-hover:scale-110 transition-transform duration-200" />
           </button>
           <button
             onClick={() => handleEditClick(task)}
-            className={`group p-2 rounded-lg shadow transition-all duration-200 ${
+            className={`group rounded-md shadow transition-all duration-200 cursor-pointer ${
               EditingTaskId === task._id
-                ? "bg-red-600 hover:bg-red-500 active:bg-red-700 text-white"
-                : "bg-green-600 hover:bg-green-500 active:bg-green-700 text-white"
+                ? "text-red-400"
+                : "text-green-400"
             }`}
           >
             {EditingTaskId === task._id ? (
-              <MdOutlineCancel className="text-md group-hover:scale-110 transition-transform duration-200" />
+              <MdOutlineCancel className="text-lg group-hover:scale-110 transition-transform duration-200" />
             ) : (
-              <FaEdit className="text-md group-hover:scale-110 transition-transform duration-200" />
+              <FaEdit className="text-sm group-hover:scale-110 transition-transform duration-200" />
             )}
           </button>
           {EditingTaskId === task._id && (
@@ -87,7 +87,7 @@ const TaskList = ({
                 setEditingTaskId(null);
                 setEditingTask("");
               }}
-              className="ms-2 group bg-green-600 hover:bg-green-200 active:bg-green-300 text-green-100 hover:text-green-700 p-2 rounded-lg shadow-md transition-all duration-200"
+              className="ms-2 group text-green-500 transition-all duration-200"
             >
               <FaCheck className="text-md group-hover:scale-110 transition-transform duration-200" />
             </button>

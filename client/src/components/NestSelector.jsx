@@ -11,7 +11,7 @@ const NestSelector = ({
       <select
         value={selectedNest || "No nest to select, please add one"}
         onChange={(e) => onChangeSelect(e.target.value)}
-        className="p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded w-full font-pop"
+        className="p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded w-full font-pop outline-none"
       >
         {currentNests.map((nest) => (
           <option key={nest._id} value={nest._id}>

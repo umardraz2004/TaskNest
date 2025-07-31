@@ -58,3 +58,8 @@
   scrollbar-width: thin;
   scrollbar-color: #1d2c4f #0f172a; /* thumb color, track color */
 }
+
+::selection {
+  background-color: #0f172a; /* amber-400 */
+  color: white;            /* slate-800 */
+}

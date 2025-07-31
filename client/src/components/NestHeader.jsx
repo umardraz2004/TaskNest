@@ -34,16 +34,14 @@ const NestHeader = ({ nest, onEditNest }) => {
       )}
       <button
         onClick={handleEditClick}
-        className={`group p-2 rounded-lg shadow transition-all duration-200 ${
-          EditingNestId === nest._id
-            ? "bg-red-600 hover:bg-red-500 active:bg-red-700 text-white"
-            : "bg-green-600 hover:bg-green-500 active:bg-green-700 text-white"
+        className={`group rounded-lg shadow transition-all duration-200 cursor-pointer ${
+          EditingNestId === nest._id ? "text-red-400" : "text-green-400"
         }`}
       >
         {EditingNestId === nest._id ? (
           <MdOutlineCancel className="text-md group-hover:scale-110 transition-transform duration-200" />
         ) : (
-          <FaEdit className="text-md group-hover:scale-110 transition-transform duration-200" />
+          <FaEdit className="text-md me-3 group-hover:scale-110 transition-transform duration-200" />
         )}
       </button>
       {EditingNestId === nest._id && (
@@ -53,7 +51,7 @@ const NestHeader = ({ nest, onEditNest }) => {
             setEditingNestId(null);
             setEditingNest("");
           }}
-          className="ms-2 group bg-green-600 hover:bg-green-200 active:bg-green-300 text-green-100 hover:text-green-700 p-2 rounded-lg shadow-md transition-all duration-200"
+          className="mx-3 group text-green-500 transition-all duration-200 cursor-pointer"
         >
           <FaCheck className="text-md group-hover:scale-110 transition-transform duration-200" />
         </button>
