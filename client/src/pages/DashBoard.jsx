@@ -104,7 +104,11 @@ const Dashboard = () => {
 
         {/* Main Panel */}
         <main className="lg:col-span-2 space-y-6">
-          {nests.length === 0 ? (
+          {!Array.isArray(nests) ? (
+            <div className="text-center text-gray-500 dark:text-gray-400">
+              No nests data available.
+            </div>
+          ) : nests.length === 0 ? (
             <div className="text-center text-gray-500 dark:text-gray-400">
               No nests found. Add a nest to get started.
             </div>
