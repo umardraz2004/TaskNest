@@ -42,7 +42,7 @@ const Registration = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-[38.8rem] px-4">
+    <div className="flex items-center justify-center min-h-[calc(100vh-4.5rem)] px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md space-y-4"
