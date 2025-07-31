@@ -12,7 +12,6 @@ export function useNestsData() {
   const qc = useQueryClient();
   const key = ["nests", userId];
   const headers = { Authorization: `Bearer ${token}` };
-  const [isNestDeleted, setIsNestDeleted] = useState(false);
 
   // ---- Load nests (array with tasks) ----
   const {
@@ -121,7 +120,7 @@ export function useNestsData() {
 
   // Expose simple functions that match your child props
   return {
-    nests: Array.isArray(data?.nests) ? data.nests : [],
+    data,
     isLoading,
     isError,
     selectedNestId,
