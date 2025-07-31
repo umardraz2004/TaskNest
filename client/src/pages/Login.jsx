@@ -3,9 +3,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from "../utils/Schema";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/AuthContext";
+import { showToast } from '../utils/toast'
+import axios from "axios";
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const Login = () => {
@@ -32,6 +33,7 @@ const Login = () => {
       loginUser(token, user);
 
       navigate("/dashboard");
+      showToast("Login successful", "success");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     }
@@ -43,7 +45,7 @@ const Login = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md space-y-4"
       >
-        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
+        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white font-pop">
           Login
         </h2>
 
@@ -81,7 +83,7 @@ const Login = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-700 hover:bg-blue-600 text-white py-2 rounded transition duration-300 cursor-pointer"
+          className="w-full bg-blue-700 hover:bg-blue-600 text-white py-2 rounded transition duration-300 cursor-pointer font-roboto"
         >
           Login
         </button>

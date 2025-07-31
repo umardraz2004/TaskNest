@@ -45,7 +45,7 @@ const Registration = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md space-y-4"
       >
-        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">
+        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white font-pop">
           Register
         </h2>
 
@@ -115,7 +115,7 @@ const Registration = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-700 hover:bg-blue-600 text-white py-2 rounded transition duration-300 cursor-pointer"
+          className="w-full bg-blue-700 hover:bg-blue-600 text-white py-2 rounded transition duration-300 cursor-pointer font-roboto"
         >
           Register
         </button>

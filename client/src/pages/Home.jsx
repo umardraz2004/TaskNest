@@ -11,7 +11,7 @@ const Home = () => {
           )}
           {" "}to TaskNest
         </h1>
-        <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300">
+        <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 font-roboto">
           Organize your tasks efficiently and stay productive with your personal
           task manager,
           {isAuthenticated

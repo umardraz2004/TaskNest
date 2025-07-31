@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaEdit, FaCheck } from "react-icons/fa";
 import { MdOutlineCancel } from "react-icons/md";
+import { showToast } from "../utils/toast";
 
 const NestHeader = ({ nest, onEditNest }) => {
   const [EditingNestId, setEditingNestId] = useState(null);
@@ -9,6 +10,8 @@ const NestHeader = ({ nest, onEditNest }) => {
   const handleEditClick = () => {
     if (EditingNestId === nest._id) {
       setEditingNestId(null); // Cancel editing
+      showToast("Editing cancelled", "success");
+      setEditingNest("");
     } else {
       setEditingNestId(nest._id);
       setEditingNest(nest.name);
@@ -25,7 +28,7 @@ const NestHeader = ({ nest, onEditNest }) => {
           className="w-full me-5 text-white font-semibold text-xl outline-4 outline-gray-700 rounded-lg p-2"
         />
       ) : (
-        <h3 className="py-2 text-xl font-semibold text-gray-700 dark:text-gray-200">
+        <h3 className="py-2 text-xl font-semibold font-pop text-gray-700 dark:text-gray-200">
           {nest.name}
         </h3>
       )}
@@ -45,7 +48,11 @@ const NestHeader = ({ nest, onEditNest }) => {
       </button>
       {EditingNestId === nest._id && (
         <button
-          onClick={() => onEditNest(editingNest, nest._id)}
+          onClick={() => {
+            onEditNest(editingNest, nest._id);
+            setEditingNestId(null);
+            setEditingNest("");
+          }}
           className="ms-2 group bg-green-600 hover:bg-green-200 active:bg-green-300 text-green-100 hover:text-green-700 p-2 rounded-lg shadow-md transition-all duration-200"
         >
           <FaCheck className="text-md group-hover:scale-110 transition-transform duration-200" />

@@ -5,6 +5,7 @@ import {
   useEffect,
   useRef,
 } from "react";
+import { showToast } from "../utils/toast";
 
 const INACTIVITY_LIMIT = 15 * 60 * 1000;
 
@@ -164,7 +165,8 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("lastActivity");
-    clearTimeout(inactivityTimer.current);
+    clearTimeout(inactivityTimerRef.current);
+    showToast("You have been logged out.", "success");
 
     dispatch({ type: "LOGOUT" });
   }

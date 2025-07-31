@@ -1,42 +1,42 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NestSelector from "../components/NestSelector";
 import InputTaskNest from "../components/InputTaskNest";
 import NestHeader from "../components/NestHeader";
 import TaskList from "../components/TaskList";
-import api from "../utils/api";
-import axios from "axios";
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+import { useNestsData } from "../hooks/useNestsData";
 
 const Dashboard = () => {
-  const [nests, setNests] = useState([]);
-  const [selectedNestId, setSelectedNestId] = useState(null);
   const [newTask, setNewTask] = useState("");
   const [newNest, setNewNest] = useState("");
 
-  // Fetch nests and tasks
-  const fetchNests = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get(`${baseURL}/api/nests`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setNests(res.data);
-    } catch (error) {
-      console.error("Failed to fetch nests", error);
-    }
-  };
+  const {
+    nests,
+    isLoading,
+    isError,
+    selectedNestId,
+    setSelectedNestId,
+    addNest,
+    updateNest,
+    deleteNest,
+    addTask,
+    updateTask,
+    deleteTask,
+    toggleTask,
+  } = useNestsData();
 
-  useEffect(() => {
-    fetchNests();
-  }, []);
+  if (isLoading) return <div className="p-6">Loading…</div>;
+  if (isError)
+    return <div className="p-6 text-red-500">Failed to load nests.</div>;
 
-  useEffect(() => {
-    if (nests.length > 0) {
-      setSelectedNestId(nests[0]._id);
-    }
-  }, [nests]);
+  // Keep child props/signatures the same:
+  const handleNestDelete = (nestId) => deleteNest(nestId);
+  const handleAddTask = (title, nestId) => addTask(nestId, title);
+  const handleAddNest = (name) => addNest(name);
+  const handleUpdateNest = (editingNest, nestId) =>
+    updateNest(nestId, editingNest);
+  const handleUpdateTask = (editingTask, nestId, taskId) =>
+    updateTask(nestId, taskId, editingTask);
+  const handleCheckboxChange = (nestId, task) => toggleTask(nestId, task);
 
   return (
     <div className="px-4 py-8">
@@ -45,20 +45,19 @@ const Dashboard = () => {
           TaskNest Dashboard
         </h2>
 
-        {/* 👇 Nest Selector & Add Task & Nest */}
         <div className="mb-6">
           <NestSelector
             selectedNest={selectedNestId}
             currentNests={nests}
             onChangeSelect={setSelectedNestId}
-            handleNestDelete={api.handleDeleteNest}
+            handleNestDelete={handleNestDelete}
           />
 
           <InputTaskNest
             inputFor="task"
             inputValue={newTask}
             onTaskChange={setNewTask}
-            taskAddHandler={api.handleAddTask}
+            taskAddHandler={handleAddTask}
             selectedNest={selectedNestId}
           />
 
@@ -66,19 +65,19 @@ const Dashboard = () => {
             inputFor="nest"
             inputValue={newNest}
             onTaskChange={setNewNest}
-            taskAddHandler={api.handleAddNest}
+            taskAddHandler={handleAddNest}
             selectedNest={selectedNestId}
           />
         </div>
 
-        {/* 👇 Tasks in Each Nest */}
         {nests.map((nest) => (
           <div key={nest._id} className="mb-6">
-            <NestHeader nest={nest} onEditNest={api.handleUpdateNest} />
+            <NestHeader nest={nest} onEditNest={handleUpdateNest} />
             <TaskList
               nest={nest}
-              onTaskEdit={api.handleUpdateTask}
-              onTaskDelete={api.handleDeleteTask}
+              onTaskEdit={handleUpdateTask}
+              onTaskDelete={(nestId, taskId) => deleteTask(nestId, taskId)}
+              onCheckBoxChange={handleCheckboxChange}
               selectedNestId={selectedNestId}
             />
           </div>

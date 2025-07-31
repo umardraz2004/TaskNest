@@ -11,7 +11,11 @@ const InputTaskNest = ({
         type="text"
         value={inputValue}
         onChange={(e) => onTaskChange(e.target.value)}
-        placeholder="Add a new task"
+        placeholder={
+          inputFor == "task"
+            ? "Add a new task"
+            : inputFor == "nest" && "Add a new nest"
+        }
         className="flex-1 p-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded w-full"
       />
       <button
