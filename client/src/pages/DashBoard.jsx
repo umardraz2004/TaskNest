@@ -101,7 +101,6 @@ const Dashboard = () => {
             selectedNest={selectedNestId}
           />
         </aside>
-
         {/* Main Panel */}
         <main className="lg:col-span-2 space-y-6">
           {!Array.isArray(nests) ? (
@@ -114,24 +113,25 @@ const Dashboard = () => {
             </div>
           ) : (
             nests.map((nest) => (
-              <div
-                key={nest._id}
-                className={`rounded-xl p-5 shadow-md bg-white dark:bg-gray-800 border-l-4 ${
-                  selectedNestId === nest._id
-                    ? "border-blue-500"
-                    : "border-gray-300 dark:border-gray-600"
-                }`}
-              >
-                <NestHeader nest={nest} onEditNest={handleUpdateNest} />
+              <div>hello</div>
+              // <div
+              //   key={nest._id}
+              //   className={`rounded-xl p-5 shadow-md bg-white dark:bg-gray-800 border-l-4 ${
+              //     selectedNestId === nest._id
+              //       ? "border-blue-500"
+              //       : "border-gray-300 dark:border-gray-600"
+              //   }`}
+              // >
+              //   <NestHeader nest={nest} onEditNest={handleUpdateNest} />
 
-                <TaskList
-                  nest={nest}
-                  onTaskEdit={handleUpdateTask}
-                  onTaskDelete={(nestId, taskId) => deleteTask(nestId, taskId)}
-                  onCheckBoxChange={handleCheckboxChange}
-                  selectedNestId={selectedNestId}
-                />
-              </div>
+              //   <TaskList
+              //     nest={nest}
+              //     onTaskEdit={handleUpdateTask}
+              //     onTaskDelete={(nestId, taskId) => deleteTask(nestId, taskId)}
+              //     onCheckBoxChange={handleCheckboxChange}
+              //     selectedNestId={selectedNestId}
+              //   />
+              // </div>
             ))
           )}
         </main>
