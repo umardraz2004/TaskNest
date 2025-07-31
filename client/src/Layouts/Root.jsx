@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 
 const Root = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-950">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800">
       <Navbar />
       <main className="flex-1">
         <Outlet />

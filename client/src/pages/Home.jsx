@@ -4,7 +4,7 @@ const Home = () => {
   const { isAuthenticated, user } = useAuth();
 
   return (
-    <div className="min-h-[calc(100vh-4.5rem)] flex items-center justify-center px-6 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800">
+    <div className="min-h-[calc(100vh-4.5rem)] flex items-center justify-center px-6">
       <div className="text-center max-w-3xl">
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight font-pop">
           Welcome
