@@ -121,7 +121,7 @@ export function useNestsData() {
 
   // Expose simple functions that match your child props
   return {
-    nests,
+    nests: Array.isArray(data?.nests) ? data.nests : [],
     isLoading,
     isError,
     selectedNestId,
