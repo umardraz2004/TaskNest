@@ -64,7 +64,7 @@ const Dashboard = () => {
   const handleUpdateTask = (editingTask, nestId, taskId) =>
     updateTask(nestId, taskId, editingTask);
   const handleCheckboxChange = (nestId, task) => toggleTask(nestId, task);
-
+  console.log("Nests data:", nests);
   return (
     <div className="relative">
       <div className="mx-auto px-8 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -113,25 +113,24 @@ const Dashboard = () => {
             </div>
           ) : (
             nests.map((nest) => (
-              <div>hello</div>
-              // <div
-              //   key={nest._id}
-              //   className={`rounded-xl p-5 shadow-md bg-white dark:bg-gray-800 border-l-4 ${
-              //     selectedNestId === nest._id
-              //       ? "border-blue-500"
-              //       : "border-gray-300 dark:border-gray-600"
-              //   }`}
-              // >
-              //   <NestHeader nest={nest} onEditNest={handleUpdateNest} />
+              <div
+                key={nest._id}
+                className={`rounded-xl p-5 shadow-md bg-white dark:bg-gray-800 border-l-4 ${
+                  selectedNestId === nest._id
+                    ? "border-blue-500"
+                    : "border-gray-300 dark:border-gray-600"
+                }`}
+              >
+                <NestHeader nest={nest} onEditNest={handleUpdateNest} />
 
-              //   <TaskList
-              //     nest={nest}
-              //     onTaskEdit={handleUpdateTask}
-              //     onTaskDelete={(nestId, taskId) => deleteTask(nestId, taskId)}
-              //     onCheckBoxChange={handleCheckboxChange}
-              //     selectedNestId={selectedNestId}
-              //   />
-              // </div>
+                <TaskList
+                  nest={nest}
+                  onTaskEdit={handleUpdateTask}
+                  onTaskDelete={(nestId, taskId) => deleteTask(nestId, taskId)}
+                  onCheckBoxChange={handleCheckboxChange}
+                  selectedNestId={selectedNestId}
+                />
+              </div>
             ))
           )}
         </main>
