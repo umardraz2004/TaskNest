@@ -35,6 +35,8 @@ const Registration = () => {
       }
     } catch (err) {
       console.error("Registration failed", err.response?.data || err.message);
+      setSending(false);
+      setShowSpin(false);
       alert(err.response?.data?.message || "Registration failed");
     }
   };
