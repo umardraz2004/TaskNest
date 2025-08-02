@@ -6,9 +6,9 @@
 
 ## 📸 Project Showcase
 
-| Home Page | Login Page | Registration Page | Dashboard |
-|-----------|------------|-------------------|-----------|
-| ![Home](./screenshots/home.png) | ![Login](./screenshots/login.png) | ![Register](./screenshots/registration.png) | ![Dashboard](./screenshots/dashboard.png) |
+| Home Page | Login Page | Registration Page | Dashboard | Sammple |
+|-----------|------------|-------------------|-----------|---------|
+| ![Home](./screenshots/home.png) | ![Login](./screenshots/login.png) | ![Register](./screenshots/registration.png) | ![Dashboard](./screenshots/dashboard.png) | ![Sample](./screenshots/sample.png) |
 
 ---
 
@@ -80,8 +80,14 @@ EMAIL_HOST=smtp.ethereal.email
 EMAIL_USER=your_email_user
 EMAIL_PASS=your_email_password
 ```
-
 You can use [Ethereal](https://ethereal.email/) for email testing.
+
+Create a `.env` file in the `client/` directory:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000
+```
+
 
 ---
 
