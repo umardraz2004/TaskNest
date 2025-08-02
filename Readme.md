@@ -73,10 +73,9 @@ Create a `.env` file in the **server** root directory with the following keys:
 
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
+MONGODB_URL=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
-CLIENT_URL=http://localhost:5173
-EMAIL_HOST=smtp.ethereal.email
+BASE_URL=http://localhost:5173
 EMAIL_USER=your_email_user
 EMAIL_PASS=your_email_password
 ```
