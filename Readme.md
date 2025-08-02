@@ -1,4 +1,4 @@
-# TaskNest 🪺 – Organize your Tasks, Effortlessly
+# TaskNest – Organize your Tasks, Effortlessly
 
 **TaskNest** is a full-stack task management app built with the **MERN** (MongoDB, Express, React, Node.js) stack. It supports creating categorized task groups (called "nests") and lets users manage their tasks with a clean, dark-themed dashboard UI.
 
