@@ -95,7 +95,7 @@ VITE_API_BASE_URL=http://localhost:5000
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/your-username/tasknest.git
+git clone https://github.com/umardraz2004/TaskNest.git
 cd tasknest
 ```
 
