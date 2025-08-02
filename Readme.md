@@ -6,7 +6,7 @@
 
 ## 📸 Project Showcase
 
-| Home Page | Login Page | Registration Page | Dashboard | Sammple |
+| Home Page | Login Page | Registration Page | Dashboard | Sample |
 |-----------|------------|-------------------|-----------|---------|
 | ![Home](./screenshots/home.png) | ![Login](./screenshots/login.png) | ![Register](./screenshots/registration.png) | ![Dashboard](./screenshots/dashboard.png) | ![Sample](./screenshots/sample.png) |
 
