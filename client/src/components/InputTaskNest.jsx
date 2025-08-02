@@ -1,5 +1,6 @@
 import { MdOutlineClear } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
+import { showToast } from "../utils/toast";
 const InputTaskNest = ({
   inputValue,
   onTaskChange,
@@ -28,7 +29,14 @@ const InputTaskNest = ({
         {inputFor == "nest" && <IoMdAdd className="text-xl" />}
       </button>
       <button
-        onClick={() => onTaskChange("")}
+        onClick={() => {
+          if (!inputValue.trim()) {
+            showToast("Input is empty", "error");
+            return;
+          }
+          onTaskChange("");
+          showToast("Input cleared", "success");
+        }}
         className={`bg-gray-950 hover:bg-gray-900 transition-colors duration-300 text-white px-4 py-2`}
       >
         <MdOutlineClear className="font-semibold text-xl" />

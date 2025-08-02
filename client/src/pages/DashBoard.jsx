@@ -64,7 +64,6 @@ const Dashboard = () => {
   const handleUpdateTask = (editingTask, nestId, taskId) =>
     updateTask(nestId, taskId, editingTask);
   const handleCheckboxChange = (nestId, task) => toggleTask(nestId, task);
-  console.log("Nests data:", nests);
   return (
     <div className="relative">
       <div className="mx-auto px-8 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8">

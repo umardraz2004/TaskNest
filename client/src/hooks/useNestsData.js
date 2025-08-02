@@ -125,18 +125,54 @@ export function useNestsData() {
     isError,
     selectedNestId,
     setSelectedNestId,
-    addNest: (name) => addNest.mutate(name),
-    updateNest: (nestId, name) => updateNest.mutate({ nestId, name }),
-    deleteNest: (nestId) => deleteNest.mutate(nestId),
-    addTask: (nestId, title) => addTask.mutate({ nestId, title }),
-    updateTask: (nestId, taskId, title) =>
-      updateTask.mutate({ nestId, taskId, title }),
-    deleteTask: (nestId, taskId) => deleteTask.mutate({ nestId, taskId }),
-    toggleTask: (nestId, task) =>
+
+    addNest: (name) => {
+      if (!name?.trim()) return showToast("Nest name is required", "error");
+      addNest.mutate(name);
+    },
+
+    updateNest: (nestId, name) => {
+      if (!nestId || !name?.trim()) {
+        return showToast("Nest ID and name are required", "error");
+      }
+      updateNest.mutate({ nestId, name });
+    },
+
+    deleteNest: (nestId) => {
+      if (!nestId) return showToast("Nest ID is required", "error");
+      deleteNest.mutate(nestId);
+    },
+
+    addTask: (nestId, title) => {
+      if (!nestId || !title?.trim()) {
+        return showToast("Nest ID and task title are required", "error");
+      }
+      addTask.mutate({ nestId, title });
+    },
+
+    updateTask: (nestId, taskId, title) => {
+      if (!nestId || !taskId || !title?.trim()) {
+        return showToast("Nest ID, task ID, and title are required", "error");
+      }
+      updateTask.mutate({ nestId, taskId, title });
+    },
+
+    deleteTask: (nestId, taskId) => {
+      if (!nestId || !taskId) {
+        return showToast("Nest ID and task ID are required", "error");
+      }
+      deleteTask.mutate({ nestId, taskId });
+    },
+
+    toggleTask: (nestId, task) => {
+      if (!nestId || !task?._id) {
+        return showToast("Nest ID and valid task are required", "error");
+      }
       toggleTask.mutate({
         nestId,
         taskId: task._id,
         nextCompleted: !task.completed,
-      }),
+      });
+    },
   };
 }
