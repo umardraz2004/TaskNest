@@ -1,23 +1,94 @@
-# 🪺 TaskNest
 
-**TaskNest** is a task management tool designed to help users organize, track, and complete their daily tasks efficiently. Inspired by the idea of a "nest" for your tasks, it offers a clean and simple way to stay productive and focused.
+# TaskNest (Old Branch - With JWT Auth, Without Email Verification)
 
-## ✨ Features
+TaskNest is a task management web application built using the MERN stack (MongoDB, Express.js, React, Node.js). This branch contains the version **with JWT-based authentication** but **without email verification**. It allows users to register, log in, and manage tasks categorized by 'nests'.
 
-- Create, edit, and delete tasks
-- Organize tasks by category or priority
-- Mark tasks as complete
-- View and manage task lists
-- Simple and user-friendly interface
+## Features
 
-## 📌 Purpose
+- ✅ User registration & login with JWT
+- ✅ Protected routes for authenticated users
+- ✅ Task creation, editing, and deletion
+- ✅ Tasks grouped under custom "Nests"
+- ✅ Task completion tracking
+- ❌ No email verification (available in main branch)
 
-TaskNest is built to make task tracking easy and effective for individuals or teams. Whether you're managing personal to-dos or professional projects, TaskNest helps you keep everything in one place.
+## Technologies Used
 
-## 📄 License
+### Frontend
+- React (Vite)
+- React Router
+- React Hook Form + Yup (for form validation)
+- Tailwind CSS (UI styling)
+- Axios
 
-This project is open-source and available under the [MIT License](LICENSE).
+### Backend
+- Node.js & Express.js
+- MongoDB + Mongoose
+- JWT
+- bcrypt (for password hashing)
+- CORS
 
----
+## Installation
 
-Made with ❤️ by the TaskNest Team
+### Backend Setup
+
+```bash
+cd backend
+npm install
+npm start
+```
+
+### Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+> ⚠️ Make sure to configure environment variables in both `server/.env` and `client/.env` for proper API communication.
+
+## Folder Structure
+
+```
+/backend
+  ├── controllers/
+  ├── middleware/
+  ├── models/
+  ├── routes/
+  └── utils/
+/frontend
+  ├── components/
+  ├── pages/
+  ├── services/
+  └── utils/
+```
+
+## Environment Variables
+
+### Backend
+
+```
+PORT=5000
+MONGO_URI=your_mongo_connection_string
+JWT_SECRET=your_secret_key
+EMAIL_USER=your_email
+EMAIL_PASS=your_password
+BASE_URL=http://localhost:5173
+```
+
+### Frontend
+
+```
+VITE_API_BASE_URL=http://localhost:5000/api
+```
+
+## Notes
+
+- JWT is handled via local storage.
+- Email verification is not implemented in this version.
+- For the latest version with email verification, switch to the `main` branch.
+
+## License
+
+This project is licensed under the MIT License.
