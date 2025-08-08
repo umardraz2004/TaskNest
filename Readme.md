@@ -104,7 +104,7 @@ cd tasknest
 ```bash
 cd server
 npm install
-npm run dev
+npm start
 ```
 
 Backend will start on `http://localhost:5000`
