@@ -15,7 +15,7 @@ connectDB();
 // Middleware to parse JSON
 app.use(express.json());
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://task-nest-olive.vercel.app",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
